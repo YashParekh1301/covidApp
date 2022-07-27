@@ -9,14 +9,14 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Skeleton from "@mui/material/Skeleton";
 import { StyledTableCell, TableNoRows } from "./Table.styles";
-import { tableColumns, tableHeaders } from "../../helpers/constants";
+import { sortOrder, tableColumns, tableHeaders } from "../../helpers/constants";
 import { ICountryConfig } from "../../interfaces";
 
 type IProps = {
   tableRows: ICountryConfig[],
   sortData: {
     sortedBy: string,
-    sortingOrder: string
+    sortingOrder: sortOrder
   },
   handleTableHeaderClick: (a: string) => void,
   isLoading: boolean
@@ -32,10 +32,10 @@ export default function CountryDataTable(props: IProps) {
   const shimmerRows = 5;
   const getColumnHeaderSortIcon = (columnId: string) => {
     if(sortedBy === columnId) {
-      if(sortingOrder === "ASC") {
+      if(sortingOrder === sortOrder.ASC) {
         return <span><ArrowUpwardIcon fontSize={"small"} /></span>
       }
-      else if(sortingOrder === "DESC"){
+      else if(sortingOrder === sortOrder.DESC){
         return <span><ArrowDownwardIcon fontSize={"small"} /></span>
       }
     }

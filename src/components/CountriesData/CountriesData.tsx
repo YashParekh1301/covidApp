@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { ICountryConfig, ICovidConfig, IFilterData, IStore } from "../../interfaces";
-import Table from "../Table/Table";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { CountriesDataWrapper,
   CountriesDataHeader,
@@ -10,9 +8,12 @@ import { CountriesDataWrapper,
   CountriesDataHeaderBottom,
   StyledRefreshIcon
 } from "./CountriesData.styles";
+import { ICountryConfig, ICovidConfig, IFilterData, IStore } from "../../interfaces";
+import Table from "../Table/Table";
 import SearchInput from "../SearchInput/SearchInput";
 import { sort } from "../../helpers";
 import Filters from "../Filters/Filters";
+import { sortOrder } from "../../helpers/constants";
 
 type IProps = {
   handleRefresh: () => void;
@@ -26,7 +27,7 @@ const CountriesData = (props: IProps) => {
   // const isLoading = useSelector((state) => state.isLoading); 
   const [ tableRows, setTableRows ] = useState<ICountryConfig[]>([]);
   const [sortedBy, setSortedBy] = useState<string>("");
-  const [sortingOrder, setSortingOrder] = useState<string>("");
+  const [sortingOrder, setSortingOrder] = useState<sortOrder>(sortOrder.NONE);
   const [searchValue, setSearchValue] = useState<string>("");
   const [filtersData, setFiltersData] = useState<IFilterData>({});
 
@@ -76,23 +77,23 @@ const CountriesData = (props: IProps) => {
     countriesData = applyFilters(countriesData, filtersData)
     let sortedData = [];
     if(sortedBy === columnId) {
-      if(sortingOrder === "ASC") {
+      if(sortingOrder === sortOrder.ASC) {
         sortedData = sort(countriesData, columnId, "DESC")
-        setSortingOrder("DESC");
+        setSortingOrder(sortOrder.DESC);
       }
-      else if(sortingOrder === "DESC") {
+      else if(sortingOrder === sortOrder.DESC) {
         sortedData = countriesData;
-        setSortingOrder("");
+        setSortingOrder(sortOrder.NONE);
         setSortedBy("");
       }
       else {
-        sortedData = sort(countriesData, columnId, "ASC");
-        setSortingOrder("ASC")
+        sortedData = sort(countriesData, columnId, sortOrder.ASC);
+        setSortingOrder(sortOrder.ASC)
       }
     }
     else {
-      sortedData = sort(countriesData, columnId, "ASC")
-      setSortingOrder("ASC")
+      sortedData = sort(countriesData, columnId, sortOrder.ASC)
+      setSortingOrder(sortOrder.ASC)
     }
       
     setTableRows(sortedData);

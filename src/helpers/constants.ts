@@ -41,11 +41,17 @@ const tableHeaders = [
 ]
 
 const debounceTimer = 300;
+enum sortOrder {
+  NONE,
+  ASC,
+  DESC
+}
 export {
   BASE_URL,
   SET_COVID_DATA,
   SET_IS_LOADING,
   tableColumns,
   tableHeaders,
-  debounceTimer
+  debounceTimer,
+  sortOrder
 }
