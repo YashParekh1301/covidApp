@@ -9,6 +9,7 @@ import { FilterWrapper,
   FilterValue,
   FilterSubmitButton
 } from "./Filters.styles";
+import { IFilterData } from "../../interfaces";
 
 const columns = [
   {
@@ -48,18 +49,24 @@ const comparators = [
     id: "gt", label: "is greater than",
   }
 ]
-const Filters = (props) => {
+
+
+type IProps = {
+  applyFilters: (a: IFilterData) => void
+}
+
+const Filters = (props: IProps) => {
 
   const {applyFilters} = props;
-  const [filterColumnId, setFilterColumnId] = useState("");
-  const [filterComparator, setFilterComparator] = useState("");
-  const [filterValue, setFilterValue] = useState("");
+  const [filterColumnId, setFilterColumnId] = useState<string>("");
+  const [filterComparator, setFilterComparator] = useState<string>("");
+  const [filterValue, setFilterValue] = useState<string>("");
 
-  const handleFilterColumnChange = (e) => {
-    setFilterColumnId(e.target.value);
+  const handleFilterColumnChange = (e: string) => {
+    setFilterColumnId(e);
   }
 
-  const handleFilterValue = (filterValue) => {
+  const handleFilterValue = (filterValue: string) => {
     setFilterValue(filterValue);
   }
 
@@ -82,7 +89,7 @@ const Filters = (props) => {
         <Accordion.Body>
           <FilterWrapper>
             <FilterColumn>
-              <Form.Select onChange={(e) => handleFilterColumnChange(e)} value={filterColumnId}>
+              <Form.Select onChange={(e) => handleFilterColumnChange(e.target.value)} value={filterColumnId}>
                 {
                   columns.map((col) => {
                     return <option key={col.id} value={col.id}>{col.label}</option>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { ICountryConfig, ICovidConfig, IFilterData, IStore } from "../../interfaces";
 import Table from "../Table/Table";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { CountriesDataWrapper,
@@ -13,23 +14,28 @@ import SearchInput from "../SearchInput/SearchInput";
 import { sort } from "../../helpers";
 import Filters from "../Filters/Filters";
 
-const CountriesData = (props) => {
+type IProps = {
+  handleRefresh: () => void;
+  isLoading: boolean;
+}
+
+const CountriesData = (props: IProps) => {
     
   const {handleRefresh, isLoading} = props;
-  const covidData = useSelector((state) => state.covidData); 
+  const covidData: ICovidConfig = useSelector((state: IStore) => state.covidData); 
   // const isLoading = useSelector((state) => state.isLoading); 
-  const [ tableRows, setTableRows ] = useState([]);
-  const [sortedBy, setSortedBy] = useState("");
-  const [sortingOrder, setSortingOrder] = useState("");
-  const [searchValue, setSearchValue] = useState("");
-  const [filtersData, setFiltersData] = useState({});
+  const [ tableRows, setTableRows ] = useState<ICountryConfig[]>([]);
+  const [sortedBy, setSortedBy] = useState<string>("");
+  const [sortingOrder, setSortingOrder] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [filtersData, setFiltersData] = useState<IFilterData>({});
 
   useEffect(() => {
     setTableRows(covidData?.Countries || [])
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [covidData])
 
-  const applySearch = (searchVal) => {
+  const applySearch = (searchVal: string) => {
     let countriesData = covidData.Countries;
     countriesData = countriesData.filter((countryData) => {
       return (countryData.Country).toLowerCase().includes(searchVal) || 
@@ -38,25 +44,25 @@ const CountriesData = (props) => {
     return countriesData;
   }
 
-  const applyFilters = (list, filterData) => {
+  const applyFilters = (list: ICountryConfig[], filterData: IFilterData) => {
     const {filterColumnId, filterComparator, filterValue} = filterData;
     let countriesData = list;
-    if(filterComparator && filterColumnId && filterValue !== "") {
+    if(filterComparator && filterColumnId && filterValue !== undefined) {
       if(filterComparator === "lt") {
         countriesData = list.filter((item) => {
-          return item[`${filterColumnId}`] < filterValue
+          return item[`${filterColumnId}` as keyof ICountryConfig] < filterValue
         })
       }
       else {
         countriesData = list.filter((item) => {
-          return item[`${filterColumnId}`] > filterValue
+          return item[`${filterColumnId}` as keyof ICountryConfig] > filterValue
         })
       }
     }
     return countriesData;
   }
 
-  const handleSearchInput = (searchVal) => {
+  const handleSearchInput = (searchVal: string) => {
     let countriesData = applySearch(searchVal);
     countriesData = applyFilters(countriesData, filtersData)
     countriesData = sort(countriesData, sortedBy, sortingOrder)
@@ -64,7 +70,7 @@ const CountriesData = (props) => {
     setTableRows(countriesData);
   }
 
-  const handleTableHeaderClick = (columnId) => {
+  const handleTableHeaderClick = (columnId: string) => {
 
     let countriesData = applySearch(searchValue);
     countriesData = applyFilters(countriesData, filtersData)
@@ -94,7 +100,7 @@ const CountriesData = (props) => {
   }
 
 
-  const handleFilterApply = (filterData) => {
+  const handleFilterApply = (filterData: IFilterData) => {
     let countriesData = applySearch(searchValue);
     countriesData = applyFilters(countriesData, filterData);
     countriesData = sort(countriesData, sortedBy, sortingOrder)

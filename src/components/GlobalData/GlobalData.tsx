@@ -1,18 +1,24 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { ICovidConfig, IGlobalConfig, IStore } from "../../interfaces";
 import GlobalDataCards from "../GlobalDataCards/GlobalDataCards";
 import { GlobalDataWrapper, GlobalDataHeader, GlobalDataHeaderText, GlobalDataHeaderDate, GlobalDataView } from "./GlobalData.styles";
 
-const GlobalData = (props) => {
+
+type IProps = {
+  globalData: IGlobalConfig,
+  isLoading: boolean
+}
+const GlobalData = (props: IProps) => {
 
   const {isLoading} = props;
-  const covidData = useSelector((state) => state.covidData) || {}; 
+  const covidData: ICovidConfig = useSelector((state: IStore) => state.covidData) || {}; 
   const { Global: globalData} = covidData;
   const {NewConfirmed, TotalConfirmed, NewDeaths, TotalDeaths, NewRecovered, TotalRecovered} = globalData || {};
   let localDate = "";
   if(globalData?.Date) {
-    localDate = new Date(globalData?.Date || undefined);
-    localDate = `${localDate.getDate()}/${localDate.getMonth() + 1}/${localDate.getFullYear()}`
+    const locDate = new Date(globalData.Date);
+    localDate = `${locDate.getDate()}/${locDate.getMonth() + 1}/${locDate.getFullYear()}`
   }
   return (
     <GlobalDataWrapper id='global-data-container' className="global-data-container">

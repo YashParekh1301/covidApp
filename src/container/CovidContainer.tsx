@@ -5,18 +5,20 @@ import GlobalData from "../components/GlobalData/GlobalData";
 import Header from "../components/Header/Header";
 import { SET_COVID_DATA } from "../helpers/constants";
 import { getCovidData } from "../helpers/index";
+import { ICovidConfig, IStore } from "../interfaces";
 import Wrapper from "./CovidContainer.styles";
 
 const CovidContainer = () => {
 
   const dispatch = useDispatch();
-  const data = useSelector(state => state.covidData);
-  const [isLoading, setIsLoading] = useState(false);
+  const data = useSelector((state: IStore) => state.covidData);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const fetchCovidData = () => {
     setIsLoading(true);
-    getCovidData().then(results => {
-      results.json().then((res) => {
+    getCovidData().then((results) => {
+      // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+      (results as any).json().then((res: ICovidConfig) => {
         setIsLoading(false);
         dispatch({
           type: SET_COVID_DATA,

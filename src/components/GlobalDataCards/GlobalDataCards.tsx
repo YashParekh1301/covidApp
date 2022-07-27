@@ -1,7 +1,16 @@
 import React from "react"
 import {GlobalDataCardsWrapper, GlobalDataNumber, GlobalDataDescription, StyledShimmer} from "./GlobalDataCards.styles";
 
-const GlobalDataCards = (props) => {
+type IProps = {
+  newNumber: number,
+  newText: string,
+  totalNumber: number,
+  totalText: string,
+  isLoading: boolean,
+  
+}
+
+const GlobalDataCards = (props: IProps) => {
 
   const {newNumber, newText, totalNumber, totalText, isLoading} = props;
 
