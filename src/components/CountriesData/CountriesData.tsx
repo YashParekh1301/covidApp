@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import CircularProgress from '@mui/material/CircularProgress';
 import { CountriesDataWrapper,
   CountriesDataHeader,
   CountriesDataHeaderText,
@@ -118,7 +119,11 @@ const CountriesData = (props: IProps) => {
         <CountriesDataHeaderTop>
           <CountriesDataHeaderText>
                 Covid Data by Country
-            <StyledRefreshIcon onClick={handleRefreshClick}><RefreshIcon /></StyledRefreshIcon>
+            {
+              isLoading ? 
+              <StyledRefreshIcon><CircularProgress color="success" size={'1em'}/></StyledRefreshIcon> :
+              <StyledRefreshIcon onClick={handleRefreshClick}><RefreshIcon /></StyledRefreshIcon>
+            }
           </CountriesDataHeaderText>
           <SearchInput handleChange={handleSearchInput}/>
         </CountriesDataHeaderTop>
