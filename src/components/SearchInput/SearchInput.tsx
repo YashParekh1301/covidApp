@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { debounce } from "../../helpers";
+import { debounceTimer } from "../../helpers/constants";
 import { InputWrapper } from "./SearchInput.styles";
 
 type IProps = {
@@ -9,12 +10,11 @@ type IProps = {
 
 const SearchInput = (props: IProps) => {
   const { handleChange } = props;
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState<string>("");
     
   const handleSearchInput = (searchVal: string) => {
-    debounce(() => handleChange(searchVal), 300)
+    debounce(() => handleChange(searchVal), debounceTimer)
     setValue(searchVal);
-
   }
   return (
     <InputWrapper>

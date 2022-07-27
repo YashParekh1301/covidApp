@@ -39,10 +39,13 @@ const tableHeaders = [
     id: "RecoveredCases", label: "Recovered Cases", colspan: 2
   }
 ]
+
+const debounceTimer = 300;
 export {
   BASE_URL,
   SET_COVID_DATA,
   SET_IS_LOADING,
   tableColumns,
-  tableHeaders
+  tableHeaders,
+  debounceTimer
 }

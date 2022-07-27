@@ -2,7 +2,6 @@ async function getCovidData () {
   try {
     const covidData = await fetch("https://api.covid19api.com/summary");
     return covidData;
-    // return dummyData
   }
   catch (err) {
     console.log("fetch covid error", err);
